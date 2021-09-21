@@ -51,4 +51,46 @@ void main() {
       expect(json['amap'].mapOf<int>(), null);
     });
   });
+
+  test('Payload', () {
+    JsonPayload json = JsonPayload();
+
+    json['newdata'] = 'hello';
+
+    expect(json['newdata'].string, 'hello');
+
+    try {
+      json['notallowed'] = () => "wat";
+    } catch (error) {
+      expect(true, true);
+    }
+
+    expect(json['notallowed'].rawValue, null);
+
+    JsonPayload jsonFromMap = JsonPayload.fromMap(
+      <String, dynamic>{
+        "astring": "hello world",
+        "anint": 12,
+        "afloat": 12.12,
+        "alist": [1, 2, 3, "hello", "world"],
+        "aintlist": [1, 2, 3],
+        "amapofint": {"yo": 1, "lo": 2},
+        "amap": {
+          "hello": "world",
+          "yo": 10,
+        },
+        "notallowed": () => "wat",
+      },
+    );
+
+    expect(jsonFromMap['astring'].string, 'hello world');
+    expect(jsonFromMap['notallowed'].rawValue, null);
+    expect(jsonFromMap.exception?.error, JsonError.unsupportedType);
+
+    JsonPayload jsonFromList = JsonPayload.fromList(<dynamic>[1, 2, 3, 4]);
+
+    jsonFromList[4] = 'hello';
+
+    expect(jsonFromList[4].string, 'hello');
+  });
 }

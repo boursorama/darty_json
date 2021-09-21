@@ -473,3 +473,87 @@ class Json {
     return mapOf<T>() ?? {};
   }
 }
+
+/// A mutable Json payload that enforce it'll always be able to json encode it's content
+class JsonPayload extends Json {
+  JsonPayload() : super();
+  JsonPayload.fromString(String json) : super.fromString(json);
+  JsonPayload.fromDynamic(dynamic rawValue) : super.fromDynamic(rawValue);
+  JsonPayload.fromMap(Map<String, dynamic> map) : super.fromMap(map);
+  JsonPayload.fromList(List<dynamic> list) : super.fromList(list);
+  JsonPayload.from(Json other) : super.from(other);
+
+  set rawValue(dynamic newValue) {
+    _rawValue = newValue;
+  }
+
+  void operator []=(dynamic key, dynamic value) {
+    _set(key, value);
+  }
+
+  @override
+  JsonPayload get jsonNull => JsonPayload.fromDynamic(null);
+
+  @override
+  JsonPayload operator [](dynamic key) => JsonPayload.from(super[key]);
+
+  @override
+  List<JsonPayload>? get list => (_rawValue is List)
+      ? (_rawValue as List).map<JsonPayload>((dynamic e) => JsonPayload.fromDynamic(e)).toList()
+      : null;
+
+  @override
+  List<JsonPayload> get listValue => (_rawValue is List)
+      ? (_rawValue as List).map<JsonPayload>((dynamic e) => JsonPayload.fromDynamic(e)).toList()
+      : [];
+  @override
+  Map<String, JsonPayload>? get map => (_rawValue is Map)
+      ? (_rawValue as Map)
+          .map<String, JsonPayload>((dynamic key, dynamic value) => MapEntry('$key', JsonPayload.fromDynamic(value)))
+      : null;
+
+  @override
+  Map<String, JsonPayload> get mapValue => (_rawValue is Map)
+      ? (_rawValue as Map)
+          .map<String, JsonPayload>((dynamic key, dynamic value) => MapEntry('$key', JsonPayload.fromDynamic(value)))
+      : {};
+
+  /// Remove element under [key]
+  void removeElementWithKey(dynamic key) {
+    if (_rawValue is List) {
+      List rawList = _rawValue as List;
+      late int index;
+
+      if (key is String) {
+        try {
+          index = int.parse(key);
+        } catch (_) {
+          throw JsonException(
+            JsonError.wrongType,
+            userReason: 'JSON Error: index must be int, ${key.runtimeType} given',
+          );
+        }
+      } else {
+        index = key as int;
+      }
+
+      rawList.removeAt(index);
+    } else if (_rawValue is Map) {
+      Map rawMap = _rawValue as Map;
+      late String index;
+
+      if (key is String) {
+        index = key;
+      } else {
+        index = '$key';
+      }
+
+      rawMap.remove(index);
+    } else {
+      throw throw JsonException(
+        JsonError.wrongType,
+        userReason: '_rawValue is not a List or a Map',
+      );
+    }
+  }
+}
