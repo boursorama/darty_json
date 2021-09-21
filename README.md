@@ -14,13 +14,60 @@ Safely interact with Json data by requiring the user to specify what type of dat
 ```dart
 Json json = Json.fromString(jsonString);
 
-json['someKey'].string;      // Gets the data under `someKey`, if a string returns it otherwise return null
-json['someKey'].stringValue; // Same but provides default string if `someKey` does not exists or is not a string
+// Gets the data under `someKey`, if a string returns it otherwise return null
+json['someKey'].string;
+// Same but provides default empty string if `someKey` does not exists or is not a string
+json['someKey'].stringValue;
 
-json['alist'].list; // Returns a list, each item is wrapped in a Json instance
-json['amap'].map;   // Returns a map, each value is wrapped in a Json instance
+// Same exists for all json types
+json['someKey'].boolean;
+json['someKey'].booleanValue; // Will try to coerce the data to bool and returns false if couldn't
+json['someKey'].float;
+json['someKey'].floatValue; // Will try to coerce the data to double and returns 0 if couldn't
+json['someKey'].integer;
+json['someKey'].integerValue; // Will try to coerce the data to int and returns 0 if couldn't
 
-json['you']['can']['chain'].string; // This enables to chain subscript access to a Json instance
+// List items and Map values are wrapped in Json instances, which enables chaining acces to them
+json['alist'].list;
+json['amap'].map;
 
-json['listofint'].listOf<int>(); // Returns a list of `int`, if any element of the list is not an `int`, returns null
+// If any path element does not exist or is not subscriptable, it'll return null
+json['you']['can']['chain']['them'].string;
+
+// Returns a list of `int`, if any element of the list is not an `int`, returns null
+json['listofint'].listOf<int>();
+// Same with maps
+json['amapofint'].mapOf<int>();
+
+// If you provide a builder you can get a list or map of anything
+json['list'].listOf<MyType>((value) => MyType(value));
+
+// You can do the same for a single value
+json['some'].ofType<MyType>((value) => MyType(value));
+// For the `value` variant you must provide a default value
+json['some'].ofTypeValue<MyType>(MyType(), (value) => MyType(value));
+
+// If you want the unaltered data you can get it with `rawValue`
+json['some'].rawValue;
+
+// If you want list and map with unaltered values
+json['list'].listObject;
+json['map'].mapObject;
+
+// If you get null, you can check if its the result of an illegal access
+if (json['idontexists'].exception != null) {
+    print('something went wrong');
+}
+```
+
+## `JsonPayload`
+
+`JsonPayload` are `Json` instances you can modify. It'll try to enforce a json encodable payload.
+
+```dart
+JsonPayload payload = JsonPayload();
+
+payload['newkey'] = 'somevalue';
+
+paylaod['newkey'].string == 'someValue';
 ```

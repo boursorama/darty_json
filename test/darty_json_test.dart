@@ -2,7 +2,7 @@ import 'package:darty_json/darty_json.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('A group of tests', () {
+  group('Json', () {
     test('Json', () {
       var jsonString = """
       {
@@ -86,6 +86,9 @@ void main() {
     expect(jsonFromMap['astring'].string, 'hello world');
     expect(jsonFromMap['notallowed'].rawValue, null);
     expect(jsonFromMap.exception?.error, JsonError.unsupportedType);
+
+    jsonFromMap['newkey'] = 'hello';
+    expect(jsonFromMap['newkey'].string, 'hello');
 
     JsonPayload jsonFromList = JsonPayload.fromList(<dynamic>[1, 2, 3, 4]);
 
