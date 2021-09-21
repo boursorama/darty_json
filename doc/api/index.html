@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 3.1.0">
+  <meta name="description" content="darty_json API docs, for the Dart programming language.">
+  <title>darty_json - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/boursorama/darty_json">darty_json package</a></li>
+  </ol>
+  <div class="self-name">darty_json</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="darty_json">darty_json</h1><!-- [![pub](https://img.shields.io/pub/v/darty_json?label=version&style=flat-square)](https://pub.dev/packages/darty_json)
+[![pub points](https://badges.bar/darty_json/pub%20points)](https://pub.dev/packages/darty_json/score)
+[![popularity](https://badges.bar/darty_json/popularity)](https://pub.dev/packages/darty_json/score)
+[![likes](https://badges.bar/darty_json/likes)](https://pub.dev/packages/darty_json/score) -->
+<p>🚚 A safe and elegant way to deal with Json data inspired by <a href="https://github.com/SwiftyJSON/SwiftyJSON">SwiftyJSON</a></p>
+<h2 id="what-is-it">What is it?</h2>
+<p>Safely interact with Json data by requiring the user to specify what type of data they want to extract.</p>
+<pre class="language-dart"><code class="language-dart">Json json = Json.fromString(jsonString);
+
+// Gets the data under `someKey`, if a string returns it otherwise return null
+json['someKey'].string;
+// Same but provides default empty string if `someKey` does not exists or is not a string
+json['someKey'].stringValue;
+
+// Same exists for all json types
+json['someKey'].boolean;
+json['someKey'].booleanValue; // Will try to coerce the data to bool and returns false if couldn't
+json['someKey'].float;
+json['someKey'].floatValue; // Will try to coerce the data to double and returns 0 if couldn't
+json['someKey'].integer;
+json['someKey'].integerValue; // Will try to coerce the data to int and returns 0 if couldn't
+
+// List items and Map values are wrapped in Json instances, which enables chaining acces to them
+json['alist'].list;
+json['amap'].map;
+
+// If any path element does not exist or is not subscriptable, it'll return null
+json['you']['can']['chain']['them'].string;
+
+// Returns a list of `int`, if any element of the list is not an `int`, returns null
+json['listofint'].listOf&lt;int&gt;();
+// Same with maps
+json['amapofint'].mapOf&lt;int&gt;();
+
+// If you provide a builder you can get a list or map of anything
+json['list'].listOf&lt;MyType&gt;((value) =&gt; MyType(value));
+
+// You can do the same for a single value
+json['some'].ofType&lt;MyType&gt;((value) =&gt; MyType(value));
+// For the `value` variant you must provide a default value
+json['some'].ofTypeValue&lt;MyType&gt;(MyType(), (value) =&gt; MyType(value));
+
+// If you want the unaltered data you can get it with `rawValue`
+json['some'].rawValue;
+
+// If you want list and map with unaltered values
+json['list'].listObject;
+json['map'].mapObject;
+
+// If you get null, you can check if its the result of an illegal access
+if (json['idontexists'].exception != null) {
+    print('something went wrong');
+}
+</code></pre>
+<h2 id="jsonpayload"><code>JsonPayload</code></h2>
+<p><code>JsonPayload</code> are <code>Json</code> instances you can modify. It'll try to enforce a json encodable payload.</p>
+<pre class="language-dart"><code class="language-dart">JsonPayload payload = JsonPayload();
+
+payload['newkey'] = 'somevalue';
+
+paylaod['newkey'].string == 'someValue';
+</code></pre>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="darty_json">
+  <span class="name"><a href="darty_json/darty_json-library.html">darty_json</a></span> 
+
+</dt>
+<dd>A safe and elegant way to deal with Json data 
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="https://github.com/boursorama/darty_json">darty_json package</a></li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">darty_json</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="darty_json/darty_json-library.html">darty_json</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    darty_json
+      1.0.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
