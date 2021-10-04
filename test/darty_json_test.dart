@@ -39,7 +39,8 @@ void main() {
       expect(json['amap']['hello']['doesnexists'].rawValue, null);
 
       expect(json['amap']['doesnexists'].exception?.error, JsonError.notExist);
-      expect(json['amap']['hello']['doesnexists'].exception?.error, JsonError.wrongType);
+      expect(json['amap']['hello']['doesnexists'].exception?.error,
+          JsonError.wrongType);
       expect(json['alist'][1000].exception?.error, JsonError.indexOutOfBounds);
       expect(json['alist']['hello'].exception?.error, JsonError.wrongType);
 
