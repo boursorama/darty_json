@@ -1,9 +1,9 @@
 # darty_json
 
-<!-- [![pub](https://img.shields.io/pub/v/darty_json?label=version&style=flat-square)](https://pub.dev/packages/darty_json)
+[![pub](https://img.shields.io/pub/v/darty_json?label=version&style=flat-square)](https://pub.dev/packages/darty_json)
 [![pub points](https://badges.bar/darty_json/pub%20points)](https://pub.dev/packages/darty_json/score)
 [![popularity](https://badges.bar/darty_json/popularity)](https://pub.dev/packages/darty_json/score)
-[![likes](https://badges.bar/darty_json/likes)](https://pub.dev/packages/darty_json/score) -->
+[![likes](https://badges.bar/darty_json/likes)](https://pub.dev/packages/darty_json/score)
 
 🚚 A safe and elegant way to deal with Json data inspired by [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)
 
