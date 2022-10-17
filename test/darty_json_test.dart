@@ -30,6 +30,9 @@ void main() {
       expect(json['anint'] is Json, true);
       expect(json['anint'].integer, 12);
 
+      expect(json['afloat'].float, 12.12);
+      expect(json['anint'].float, 12);
+
       expect(json['alist'].list is List<Json>, true);
       expect(json['alist'].listValue[3].string, 'hello');
 

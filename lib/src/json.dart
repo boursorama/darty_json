@@ -319,7 +319,10 @@ class Json {
   }
 
   /// Returns a [double] or [null] if [rawValue] is not a [double]
-  double? get float => (_rawValue is double) ? _rawValue as double : null;
+  double? get float {
+    final dynamic rawValueCopy = _rawValue;
+    return (rawValueCopy is num) ? rawValueCopy.toDouble() : null;
+  }
 
   /// Returns a [double] 0 if [rawValue] is not a [double]
   double get floatValue {
