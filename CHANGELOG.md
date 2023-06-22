@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fixed JsonPayload nested assignment
+
 ## 1.0.2
 
 - Fixed JsonPayload nested assignment

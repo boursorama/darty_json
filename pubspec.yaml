@@ -1,6 +1,6 @@
 name: darty_json
 description: A safe and elegant way to deal with Json data
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/boursorama/darty_json
 
 environment:
