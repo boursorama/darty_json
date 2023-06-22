@@ -111,7 +111,7 @@ class Json {
   }
 
   /// Create [Json] from a [List]
-  Json.fromList(List<dynamic> list) {
+  Json.fromList(List<dynamic> list, {bool initial = true}) {
     _rawValue = <dynamic>[];
 
     try {
@@ -492,9 +492,9 @@ class Json {
 class JsonPayload extends Json {
   JsonPayload() : super();
   JsonPayload.fromString(String json) : super.fromString(json);
-  JsonPayload.fromDynamic(dynamic rawValue) : super.fromDynamic(rawValue);
-  JsonPayload.fromMap(Map<String, dynamic> map) : super.fromMap(map);
-  JsonPayload.fromList(List<dynamic> list) : super.fromList(list);
+  JsonPayload.fromDynamic(dynamic rawValue, {bool initial = true}) : super.fromDynamic(rawValue, initial: initial);
+  JsonPayload.fromMap(Map<String, dynamic> map, {bool initial = true}) : super.fromMap(map, initial: initial);
+  JsonPayload.fromList(List<dynamic> list, {bool initial = true}) : super.fromList(list, initial: initial);
   JsonPayload.from(Json other, {bool initial = true}) : super.from(other, initial: initial);
 
   set rawValue(dynamic newValue) {
