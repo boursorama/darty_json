@@ -154,6 +154,10 @@ class Json {
   @override
   String toString() => jsonEncode(_rawValue);
 
+  dynamic toJson() {
+    return (_rawValue is Json) ? _rawValue.toJson() : _rawValue;
+  }
+
   void _set(dynamic key, dynamic value) {
     // If not a json encodable type fail
     if (value is! String &&

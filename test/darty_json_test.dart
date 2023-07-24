@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:darty_json/darty_json.dart';
 import 'package:test/test.dart';
 
@@ -111,5 +113,20 @@ void main() {
     jsonPayload["request"]["pathName"] = "toto";
 
     expect(jsonPayload["request"]["pathName"].string, "toto");
+  });
+
+  test('Expect JSON object to be jsonEncodable', () {
+    var requestString = '{"pathName":"yolo"}';
+    var jsonInputString = '''{"request":$requestString}''';
+
+    final jsonPayload = JsonPayload.fromString(jsonInputString);
+
+    expect(jsonEncode(jsonPayload), jsonInputString);
+    expect(jsonEncode(jsonPayload["request"]), requestString);
+
+    jsonPayload["request"]["pathName"] = "toto";
+
+    expect(jsonEncode(jsonPayload["request"]), '{"pathName":"toto"}');
+    expect(jsonEncode(jsonPayload["baaaaaaad"]), "null");
   });
 }
