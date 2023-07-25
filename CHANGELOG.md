@@ -1,10 +1,14 @@
+## 1.0.4
+
+- `Json` and `JsonPayload` are json encodable, meaning they can be use with `darat:convert jsonEncode`
+
 ## 1.0.3
 
-- Fixed JsonPayload nested assignment
+- Fixed `JsonPayload` nested assignment
 
 ## 1.0.2
 
-- Fixed JsonPayload nested assignment
+- Fixed `JsonPayload` nested assignment
 
 ## 1.0.1
 
