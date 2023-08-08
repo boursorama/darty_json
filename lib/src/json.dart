@@ -158,6 +158,13 @@ class Json {
     return (_rawValue is Json) ? _rawValue.toJson() : _rawValue;
   }
 
+  /// Compare [Json] by instance or by value
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is Json && toString() == other.toString();
+
+  @override
+  int get hashCode => toString().hashCode;
+
   void _set(dynamic key, dynamic value) {
     // If not a json encodable type fail
     if (value is! String &&
