@@ -129,4 +129,14 @@ void main() {
     expect(jsonEncode(jsonPayload["request"]), '{"pathName":"toto"}');
     expect(jsonEncode(jsonPayload["baaaaaaad"]), "null");
   });
+
+  test('Expect JSON object to be equals', () {
+    final jsonPayload1 = JsonPayload.fromString('''{"request":{"pathName":"yolo"}}''');
+    final jsonPayload2 = JsonPayload.fromString('''{"request":{"pathName":"yolo"}}''');
+    final jsonPayload3 = JsonPayload.fromString('''{"request":{"pathName":"yolo2"}}''');
+
+    expect(jsonPayload1, jsonPayload1);
+    expect(jsonPayload1, jsonPayload2);
+    expect(jsonPayload1 != jsonPayload3, true);
+  });
 }
