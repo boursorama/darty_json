@@ -41,7 +41,8 @@ void main() {
       expect(json['amap']['hello']['doesnexists'].rawValue, null);
 
       expect(json['amap']['doesnexists'].exception?.error, JsonError.notExist);
-      expect(json['amap']['hello']['doesnexists'].exception?.error, JsonError.wrongType);
+      expect(json['amap']['hello']['doesnexists'].exception?.error,
+          JsonError.wrongType);
       expect(json['alist'][1000].exception?.error, JsonError.indexOutOfBounds);
       expect(json['alist']['hello'].exception?.error, JsonError.wrongType);
 
@@ -128,5 +129,18 @@ void main() {
 
     expect(jsonEncode(jsonPayload["request"]), '{"pathName":"toto"}');
     expect(jsonEncode(jsonPayload["baaaaaaad"]), "null");
+  });
+
+  test('Expect JSON object to be equals', () {
+    final jsonPayload1 =
+        JsonPayload.fromString('''{"request":{"pathName":"yolo"}}''');
+    final jsonPayload2 =
+        JsonPayload.fromString('''{"request":{"pathName":"yolo"}}''');
+    final jsonPayload3 =
+        JsonPayload.fromString('''{"request":{"pathName":"yolo2"}}''');
+
+    expect(jsonPayload1, jsonPayload1);
+    expect(jsonPayload1, jsonPayload2);
+    expect(jsonPayload1 != jsonPayload3, true);
   });
 }
