@@ -123,7 +123,8 @@ class Json {
 
   /// Compare [Json] by instance or by value
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Json && toString() == other.toString();
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Json && toString() == other.toString();
 
   @override
   int get hashCode => toString().hashCode;
@@ -170,7 +171,8 @@ class Json {
 
   /// Returns a [Json] wrapping the data under [key]. If [key] does not exist, returns a empty [Json] instance with an [exception]
   Json operator [](Object key) {
-    if ((key is! String && key is! int) || (_rawValue is! List && _rawValue is! Map)) {
+    if ((key is! String && key is! int) ||
+        (_rawValue is! List && _rawValue is! Map)) {
       var result = jsonNull;
       result.exception = exception ?? JsonException(JsonError.wrongType);
       return result;
@@ -187,7 +189,8 @@ class Json {
         result.exception = exception ??
             JsonException(
               JsonError.wrongType,
-              userReason: 'JSON Error: index must be int, ${key.runtimeType} given',
+              userReason:
+                  'JSON Error: index must be int, ${key.runtimeType} given',
             );
         return result;
       }
@@ -235,7 +238,11 @@ class Json {
 
   /// Returns a [String] or an empty [String] if [rawValue] is not a [String]
   String get stringValue => switch (_rawValue) {
-        const (String) || const (bool) || const (int) || const (double) => _rawValue?.toString() ?? '',
+        const (String) ||
+        const (bool) ||
+        const (int) ||
+        const (double) =>
+          _rawValue?.toString() ?? '',
         _ => '',
       };
 
@@ -249,7 +256,8 @@ class Json {
     } else if (_rawValue is int || _rawValue is double) {
       return _rawValue == 1;
     } else if (_rawValue is String) {
-      return ['true', 'y', 't', 'yes', '1'].contains((_rawValue as String).toLowerCase());
+      return ['true', 'y', 't', 'yes', '1']
+          .contains((_rawValue as String).toLowerCase());
     }
 
     return false;
@@ -277,7 +285,8 @@ class Json {
     return 0;
   }
 
-  double? get float => (_rawValue is num) ? (_rawValue as num).toDouble() : null;
+  double? get float =>
+      (_rawValue is num) ? (_rawValue as num).toDouble() : null;
 
   /// Returns a [double] 0 if [rawValue] is not a [double]
   double get floatValue {
@@ -328,13 +337,15 @@ class Json {
 
   /// Returns a [List] or [null] if [rawValue] is not a [List]
   /// Each element of the list is wrapped in a [Json] instance
-  List<Json>? get list =>
-      (_rawValue is List) ? (_rawValue as List).map<Json>((Any e) => Json.fromDynamic(e)).toList() : null;
+  List<Json>? get list => (_rawValue is List)
+      ? (_rawValue as List).map<Json>((Any e) => Json.fromDynamic(e)).toList()
+      : null;
 
   /// Returns a [List] or an empty [List] if [rawValue] is not a [List]
   /// Each element of the list is wrapped in a [Json] instance
-  List<Json> get listValue =>
-      (_rawValue is List) ? (_rawValue as List).map<Json>((Any e) => Json.fromDynamic(e)).toList() : [];
+  List<Json> get listValue => (_rawValue is List)
+      ? (_rawValue as List).map<Json>((Any e) => Json.fromDynamic(e)).toList()
+      : [];
 
   /// Returns a [List] or [null] if [rawValue] is not a [List]
   /// Leaves list items untouched
@@ -363,7 +374,8 @@ class Json {
           exception = exception ??
               JsonException(
                 JsonError.wrongType,
-                userReason: 'JSON Error: at least one element is not of type `$T`',
+                userReason:
+                    'JSON Error: at least one element is not of type `$T`',
               );
 
           throw exception!;
@@ -385,22 +397,26 @@ class Json {
   /// Returns a [Map] or [null] if [rawValue] is not a [Map]
   /// Each value of the map is wrapped in a [Json]
   Map<String, Json>? get map => (_rawValue is Map)
-      ? (_rawValue as Map).map((Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
+      ? (_rawValue as Map).map(
+          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
       : null;
 
   /// Returns a [Map] or an empty [Map] if [rawValue] is not a [Map]
   /// Each value of the map is wrapped in a [Json]
   Map<String, Json> get mapValue => (_rawValue is Map)
-      ? (_rawValue as Map).map((Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
+      ? (_rawValue as Map).map(
+          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
       : {};
 
   /// Returns a [Map] or [null] if [rawValue] is not a [Map]
   /// Leaves map values untouched
-  Map<String, Any>? get mapObject => (_rawValue is Map) ? _rawValue as Map<String, Any> : null;
+  Map<String, Any>? get mapObject =>
+      (_rawValue is Map) ? _rawValue as Map<String, Any> : null;
 
   /// Returns a [Map] of [T] or empty [Map] if [rawValue] is not a [Map] of [T]
   /// Leaves map values untouched
-  Map<String, Any> get mapObjectValue => (_rawValue is Map) ? _rawValue as Map<String, Any> : {};
+  Map<String, Any> get mapObjectValue =>
+      (_rawValue is Map) ? _rawValue as Map<String, Any> : {};
 
   /// Returns a [Map] of [T] or [null] if [rawValue] is not a [Map] of [T]
   /// If actual data is not a [Map] of [T], calls [builder] to get one
@@ -409,7 +425,9 @@ class Json {
       try {
         return (_rawValue as Map).map((Any key, Any value) {
           if (key is! String) {
-            exception = exception ?? JsonException(JsonError.wrongType, userReason: 'JSON Error: key must be a String');
+            exception = exception ??
+                JsonException(JsonError.wrongType,
+                    userReason: 'JSON Error: key must be a String');
 
             throw exception!;
           } else if (value is T) {
@@ -423,7 +441,9 @@ class Json {
           }
 
           exception = exception ??
-              JsonException(JsonError.wrongType, userReason: 'JSON Error: at least one element is not of type `$T`');
+              JsonException(JsonError.wrongType,
+                  userReason:
+                      'JSON Error: at least one element is not of type `$T`');
 
           throw exception!;
         });
@@ -446,7 +466,8 @@ class Json {
 class JsonPayload extends Json {
   JsonPayload();
   JsonPayload.fromString(super.json) : super.fromString();
-  JsonPayload.fromDynamic(super.rawValue, {super.initial}) : super.fromDynamic();
+  JsonPayload.fromDynamic(super.rawValue, {super.initial})
+      : super.fromDynamic();
   JsonPayload.fromMap(super.map, {super.initial}) : super.fromMap();
   JsonPayload.fromList(super.list, {super.initial}) : super.fromList();
   JsonPayload.from(super.other, {super.initial}) : super.from();
@@ -463,24 +484,33 @@ class JsonPayload extends Json {
   JsonPayload get jsonNull => JsonPayload.fromDynamic(null);
 
   @override
-  JsonPayload operator [](Object key) => JsonPayload.from(super[key], initial: false);
+  JsonPayload operator [](Object key) =>
+      JsonPayload.from(super[key], initial: false);
 
   @override
-  List<JsonPayload>? get list =>
-      (_rawValue is List) ? (_rawValue as List).map<JsonPayload>((Any e) => JsonPayload.fromDynamic(e)).toList() : null;
+  List<JsonPayload>? get list => (_rawValue is List)
+      ? (_rawValue as List)
+          .map<JsonPayload>((Any e) => JsonPayload.fromDynamic(e))
+          .toList()
+      : null;
 
   @override
-  List<JsonPayload> get listValue =>
-      (_rawValue is List) ? (_rawValue as List).map<JsonPayload>((Any e) => JsonPayload.fromDynamic(e)).toList() : [];
+  List<JsonPayload> get listValue => (_rawValue is List)
+      ? (_rawValue as List)
+          .map<JsonPayload>((Any e) => JsonPayload.fromDynamic(e))
+          .toList()
+      : [];
 
   @override
   Map<String, JsonPayload>? get map => (_rawValue is Map)
-      ? (_rawValue as Map).map((Any key, Any value) => MapEntry('$key', JsonPayload.fromDynamic(value)))
+      ? (_rawValue as Map).map((Any key, Any value) =>
+          MapEntry('$key', JsonPayload.fromDynamic(value)))
       : null;
 
   @override
   Map<String, JsonPayload> get mapValue => (_rawValue is Map)
-      ? (_rawValue as Map).map((Any key, Any value) => MapEntry('$key', JsonPayload.fromDynamic(value)))
+      ? (_rawValue as Map).map((Any key, Any value) =>
+          MapEntry('$key', JsonPayload.fromDynamic(value)))
       : {};
 
   /// Remove element under [key]
@@ -496,7 +526,8 @@ class JsonPayload extends Json {
           Error.throwWithStackTrace(
             JsonException(
               JsonError.wrongType,
-              userReason: 'JSON Error: index must be int, ${key.runtimeType} given',
+              userReason:
+                  'JSON Error: index must be int, ${key.runtimeType} given',
             ),
             trace,
           );
@@ -537,7 +568,9 @@ enum JsonError {
   indexOutOfBounds(reason: 'JSON Error: index out of bounds'),
 
   /// Unexpected type
-  wrongType(reason: 'JSON Error: either key is not a index type or value is not indexable'),
+  wrongType(
+      reason:
+          'JSON Error: either key is not a index type or value is not indexable'),
 
   /// Entry does not exists
   notExist(reason: 'JSON Error: key does\'t not exists');
@@ -555,7 +588,8 @@ class JsonException implements Exception {
   /// Error message
   final String reason;
 
-  JsonException(this.error, {String? userReason}) : reason = userReason ?? error.reason;
+  JsonException(this.error, {String? userReason})
+      : reason = userReason ?? error.reason;
 
   @override
   String toString() => 'JsonException{error: $error, reason: $reason}';
