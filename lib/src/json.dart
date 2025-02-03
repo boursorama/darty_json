@@ -28,24 +28,26 @@ class Json {
     }
 
     final asMap = tryCast<Map<String, Any>>(_rawValue);
-    final asIterable = tryCast<Iterable>(_rawValue);
+    final asIterable = tryCast<Iterable<Any>>(_rawValue);
 
     if (asMap != null) {
       _rawValue = <String, Any>{};
-      try {
-        asMap.forEach((String key, Any value) => _set(key, value));
-      } on JsonException catch (error) {
-        exception = exception ?? error;
-      }
+      asMap.forEach((String key, Any value) {
+        try {
+          _set(key, value);
+        } on JsonException catch (error) {
+          exception = exception ?? error;
+        }
+      });
     } else if (asIterable != null) {
       _rawValue = <Any>[];
-      try {
-        int i = 0;
-        for (var item in asIterable) {
+      int i = 0;
+      for (var item in asIterable) {
+        try {
           _set(i++, item);
+        } on JsonException catch (error) {
+          exception = exception ?? error;
         }
-      } on JsonException catch (error) {
-        exception = exception ?? error;
       }
     } else if (_rawValue is! int &&
         _rawValue is! double &&
@@ -66,24 +68,26 @@ class Json {
 
     _rawValue = <String, Any>{};
 
-    try {
-      map.forEach((String key, Any value) => _set(key, value));
-    } on JsonException catch (error) {
-      exception = exception ?? error;
-    }
+    map.forEach((String key, Any value) {
+      try {
+        _set(key, value);
+      } on JsonException catch (error) {
+        exception = exception ?? error;
+      }
+    });
   }
 
   /// Create [Json] from a [List]
   Json.fromList(List<Any> list, {bool initial = true}) {
     _rawValue = <Any>[];
 
-    try {
-      int i = 0;
-      for (var item in list) {
+    int i = 0;
+    for (var item in list) {
+      try {
         _set(i++, item);
+      } on JsonException catch (error) {
+        exception = exception ?? error;
       }
-    } on JsonException catch (error) {
-      exception = exception ?? error;
     }
   }
 
@@ -143,8 +147,8 @@ class Json {
 
     if (key == null) return;
 
-    final rawMap = tryCast<Map>(_rawValue);
-    final rawList = tryCast<List>(_rawValue);
+    final rawMap = tryCast<Map<Any, Any>>(_rawValue);
+    final rawList = tryCast<List<Any>>(_rawValue);
     if (rawList != null) {
       int? index = (key is String) ? int.tryParse(key) : tryCast<int>(key);
       if (index == null) {
@@ -178,8 +182,8 @@ class Json {
       return result;
     }
 
-    final rawList = tryCast<List>(_rawValue);
-    final rawMap = tryCast<Map>(_rawValue);
+    final rawList = tryCast<List<Any>>(_rawValue);
+    final rawMap = tryCast<Map<Any, Any>>(_rawValue);
 
     if (rawList != null) {
       int? index = key is String ? int.tryParse(key) : tryCast<int>(key);
@@ -349,11 +353,11 @@ class Json {
 
   /// Returns a [List] or [null] if [rawValue] is not a [List]
   /// Leaves list items untouched
-  List? get listObject => (_rawValue is List) ? _rawValue as List : null;
+  List<Any>? get listObject => (_rawValue is List) ? _rawValue as List : null;
 
   /// Returns a [List] or an empty [List] if [rawValue] is not a [List]
   /// Leaves list items untouched
-  List get listObjectValue => (_rawValue is List) ? _rawValue as List : <Any>[];
+  List<Any> get listObjectValue => (_rawValue is List) ? _rawValue as List : [];
 
   /// Returns a [List] of [T] or empty list if [rawValue] is not a [List] of [T]
   /// If actual data is not a [List] of [T], calls [builder] to get one
@@ -398,14 +402,16 @@ class Json {
   /// Each value of the map is wrapped in a [Json]
   Map<String, Json>? get map => (_rawValue is Map)
       ? (_rawValue as Map).map(
-          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
+          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)),
+        )
       : null;
 
   /// Returns a [Map] or an empty [Map] if [rawValue] is not a [Map]
   /// Each value of the map is wrapped in a [Json]
   Map<String, Json> get mapValue => (_rawValue is Map)
       ? (_rawValue as Map).map(
-          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)))
+          (Any key, Any value) => MapEntry('$key', Json.fromDynamic(value)),
+        )
       : {};
 
   /// Returns a [Map] or [null] if [rawValue] is not a [Map]
@@ -426,8 +432,10 @@ class Json {
         return (_rawValue as Map).map((Any key, Any value) {
           if (key is! String) {
             exception = exception ??
-                JsonException(JsonError.wrongType,
-                    userReason: 'JSON Error: key must be a String');
+                JsonException(
+                  JsonError.wrongType,
+                  userReason: 'JSON Error: key must be a String',
+                );
 
             throw exception!;
           } else if (value is T) {
@@ -441,9 +449,11 @@ class Json {
           }
 
           exception = exception ??
-              JsonException(JsonError.wrongType,
-                  userReason:
-                      'JSON Error: at least one element is not of type `$T`');
+              JsonException(
+                JsonError.wrongType,
+                userReason:
+                    'JSON Error: at least one element is not of type `$T`',
+              );
 
           throw exception!;
         });
@@ -516,7 +526,7 @@ class JsonPayload extends Json {
   /// Remove element under [key]
   void removeElementWithKey(Any key) {
     if (_rawValue is List) {
-      List rawList = _rawValue as List;
+      final rawList = _rawValue as List;
       late int index;
 
       if (key is String) {
@@ -538,7 +548,7 @@ class JsonPayload extends Json {
 
       rawList.removeAt(index);
     } else if (_rawValue is Map) {
-      Map rawMap = _rawValue as Map;
+      final rawMap = _rawValue as Map;
       late String index;
 
       if (key is String) {
@@ -569,8 +579,9 @@ enum JsonError {
 
   /// Unexpected type
   wrongType(
-      reason:
-          'JSON Error: either key is not a index type or value is not indexable'),
+    reason:
+        'JSON Error: either key is not a index type or value is not indexable',
+  ),
 
   /// Entry does not exists
   notExist(reason: 'JSON Error: key does\'t not exists');
