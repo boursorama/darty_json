@@ -10,7 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
+      - run: sudo apt-get install lcov -y
+      - run: mkdir -p ./build/coverage
       - run: dart pub get
       - run: dart format --output=none --set-exit-if-changed .
       - run: dart analyze
-      - run: dart test
+      - run: dart pub global activate coverage
+      - run: dart test test/main.dart --coverage=./build/coverage
+      - run: dart pub global run coverage:format_coverage --lcov --check-ignore  --in=./build/coverage --out=./build/lcov.info --packages=./.dart_tool/package_config.json --report-on=lib
+      - run: "sudo genhtml ./build/lcov.info --output=.build/coverage/html | grep 'lines.*: 100.0%'"

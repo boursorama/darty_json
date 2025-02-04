@@ -1,13 +1,10 @@
 name: darty_json
 description: A safe and elegant way to deal with Json data
-version: 1.0.5
+version: 2.0.0
 homepage: https://github.com/boursorama/darty_json
 
 environment:
-  sdk: ">=3.2.0"
-
-# dependencies:
-#   path: ^1.8.0
+  sdk: ">=3.2.0 <4.0.0"
 
 dev_dependencies:
   lints: ^5.0.0
